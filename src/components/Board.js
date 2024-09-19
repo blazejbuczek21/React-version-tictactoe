@@ -1,17 +1,16 @@
-import Cell from "./Cell";
+import "./board.css";
+import React from "react";
 
-function Board() {
-  let board = Array(9).fill(null);
-
+const Board = ({ board, cellClick }) => {
   return (
-    <div>
-      BOARD
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
+    <div className="board">
+      {board.map((cell, index) => (
+        <div key={index} className="cell" onClick={() => cellClick(index)}>
+          {cell}
+        </div>
+      ))}
     </div>
   );
-}
+};
 
 export default Board;
