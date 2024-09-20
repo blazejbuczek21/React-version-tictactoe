@@ -5,42 +5,55 @@ import Info from "./components/Info";
 import Board from "./components/Board";
 import Restart from "./components/Restart";
 
-const winCombinations = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
+
 
 const App = () => {
+
+  const winCombinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
   const [board, setBoard] = useState(Array(9).fill(null));
   const [moves, setMoves] = useState(0);
   const [isComputerPlayer, setIsComputerPlayer] = useState(false);
-  const [isMakingMove, setIsMakingMove] = useState(false);
+  const [gameOver, setGameOver] = useState(false); // Śledzenie stanu gry
+  const [isPlayerTurn, setIsPlayerTurn] = useState(true);
 
   const currentPlayer = moves % 2 === 0 ? "X" : "O";
+  if(currentPlayer==="O" && isComputerPlayer===true){
+    setIsPlayerTurn(true);
+  }else{
+    setIsPlayerTurn(false);
+  }
+
 
   const cellClick = (index) => {
-    if (!board[index]) {
+    if (!board[index] && !gameOver && isPlayerTurn) {
       const newBoard = [...board];
       newBoard[index] = currentPlayer;
       setBoard(newBoard);
       setMoves(moves + 1);
-      console.log(moves);
-      checkLogic();
+      checkLogic(newBoard);
     }
   };
-  const checkLogic = () => {
-    //logika
+  const checkLogic = (newBoard) => {
+    if (playerWon(newBoard)){
+    console.log("WIN")
+    setGameOver(true);
+}
+
   };
-  const playerWon = () => {
+  const playerWon = (newBoard) => {
     for (const combinations of winCombinations) {
       let [a, b, c] = combinations;
-      if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+      if (newBoard[a] && newBoard[a] === newBoard[b] && newBoard[b] === newBoard[c]) {
         // paintCells(a, b, c);
         return [a, b, c];
       }
