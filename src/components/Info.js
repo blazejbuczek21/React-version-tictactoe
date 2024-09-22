@@ -1,12 +1,8 @@
 import React from "react";
 import "./info.css";
 
-const Info = ({ infoText, infoColor }) => {
-  return (
-    <div className="info" style={{ infoColor }}>
-      {infoText}
-    </div>
-  );
+const Info = ({ infoText }) => {
+  return <div className="info">{infoText}</div>;
 };
 
 export default Info;
