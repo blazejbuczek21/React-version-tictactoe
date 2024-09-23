@@ -1,7 +1,13 @@
 import "./header.css";
 import React from "react";
 
-const Header = ({ setIsComputerPlayer, restartGame, isComputerPlayer }) => {
+const Header = ({
+  setIsComputerPlayer,
+  restartGame,
+  isComputerPlayer,
+  setInfoText,
+  currentPlayer,
+}) => {
   return (
     <div className="container">
       <div className="header">
@@ -9,7 +15,10 @@ const Header = ({ setIsComputerPlayer, restartGame, isComputerPlayer }) => {
       </div>
       <div className="mode">
         <div
-          onClick={() => setIsComputerPlayer(true)}
+          onClick={() => {
+            setIsComputerPlayer(true);
+            setInfoText(`Your move ${currentPlayer}`);
+          }}
           className={
             isComputerPlayer === true ? "header_item_active" : "header_item"
           }
@@ -17,7 +26,10 @@ const Header = ({ setIsComputerPlayer, restartGame, isComputerPlayer }) => {
           Computer
         </div>
         <div
-          onClick={() => setIsComputerPlayer(false)}
+          onClick={() => {
+            setIsComputerPlayer(false);
+            setInfoText(`Player ${currentPlayer} turn`);
+          }}
           className={
             isComputerPlayer === false ? "header_item_active" : "header_item"
           }

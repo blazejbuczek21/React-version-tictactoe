@@ -22,7 +22,6 @@ const App = () => {
   const [isComputerPlayer, setIsComputerPlayer] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
-  // const currentPlayer = moves % 2 === 0 ? "X" : "O";
   const [currentPlayer, setCurrentPlayer] = useState("X");
   const [infoText, setInfoText] = useState(`Player X turn`);
 
@@ -30,12 +29,12 @@ const App = () => {
     if (!board[index] && !gameOver && isPlayerTurn) {
       const newBoard = [...board];
       newBoard[index] = currentPlayer;
-      setBoard(newBoard);
+      setBoard(newBoard); // tutaj ustawiamy board jako zaktualizowaną planszę newBoard, ale dalej musze używać newBoard a po tym kroku wartości tych zmiennych powinny być identyczne, a jednak coś się rozjeżdża
       setMoves(moves + 1);
       checkLogic(newBoard, currentPlayer, moves);
     }
   };
-  const checkLogic = (newBoard, currentPlayer, moves) => {
+  const checkLogic = (newBoard, currentPlayer, moves, nextPlayer) => {
     if (playerWon(newBoard)) {
       setGameOver(true);
       setInfoText(`Player ${currentPlayer} won`);
@@ -45,11 +44,36 @@ const App = () => {
       setInfoText(`Draw`);
     }
     if (!playerWon(newBoard) && moves !== 8) {
-      // nie wiem czemu nie działa zwykły else bez warunków XD pojebane
       const nextPlayer = currentPlayer === "X" ? "O" : "X";
       setCurrentPlayer(nextPlayer);
-      setInfoText(`Player ${nextPlayer} turn`);
+      if (isComputerPlayer === false) {
+        setInfoText(`Player ${nextPlayer} turn`);
+      }
+      if (isComputerPlayer === true && nextPlayer === "O") {
+        setInfoText(`${nextPlayer} is thinking`);
+        setIsPlayerTurn(false);
+        setTimeout(() => {
+          makeComputerMove(newBoard, nextPlayer);
+        }, 1000);
+      }
+      if (isComputerPlayer === true && nextPlayer === "X")
+        setInfoText(`Your move ${nextPlayer}`);
     }
+  };
+
+  const makeComputerMove = (newBoard, nextPlayer) => {
+    let emptyCells = [];
+    for (let i = 0; i < newBoard.length; i++) {
+      if (!newBoard[i]) emptyCells.push(i);
+    }
+    let randomIndex = Math.floor(Math.random() * emptyCells.length);
+    let move = emptyCells[randomIndex];
+    newBoard[move] = nextPlayer;
+    setBoard(newBoard);
+    setMoves(moves + 1);
+    setIsPlayerTurn(true);
+    setCurrentPlayer(nextPlayer === "X" ? "O" : "X");
+    checkLogic(newBoard, nextPlayer, moves + 1);
   };
 
   const playerWon = (newBoard) => {
@@ -71,8 +95,10 @@ const App = () => {
     <div className="App">
       <Header
         setIsComputerPlayer={setIsComputerPlayer}
+        setInfoText={setInfoText}
         // restartGame={restartGame}
         isComputerPlayer={isComputerPlayer}
+        currentPlayer={currentPlayer}
       />
       <Info infoText={infoText} />
       <Board board={board} cellClick={cellClick} />
