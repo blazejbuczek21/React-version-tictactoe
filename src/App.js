@@ -29,12 +29,13 @@ const App = () => {
     if (!board[index] && !gameOver && isPlayerTurn) {
       const newBoard = [...board];
       newBoard[index] = currentPlayer;
-      setBoard(newBoard); // tutaj ustawiamy board jako zaktualizowaną planszę newBoard, ale dalej musze używać newBoard a po tym kroku wartości tych zmiennych powinny być identyczne, a jednak coś się rozjeżdża
-      setMoves(moves + 1);
-      checkLogic(newBoard, currentPlayer, moves);
+      setBoard(newBoard);
+      setMoves((prevMoves) => prevMoves + 1);
+      checkLogic(newBoard, currentPlayer);
     }
   };
-  const checkLogic = (newBoard, currentPlayer, moves, nextPlayer) => {
+  const checkLogic = (newBoard, currentPlayer) => {
+    console.log(moves);
     if (playerWon(newBoard)) {
       setGameOver(true);
       setInfoText(`Player ${currentPlayer} won`);
@@ -59,6 +60,7 @@ const App = () => {
       if (isComputerPlayer === true && nextPlayer === "X")
         setInfoText(`Your move ${nextPlayer}`);
     }
+    console.log(moves);
   };
 
   const makeComputerMove = (newBoard, nextPlayer) => {
@@ -70,10 +72,10 @@ const App = () => {
     let move = emptyCells[randomIndex];
     newBoard[move] = nextPlayer;
     setBoard(newBoard);
-    setMoves(moves + 1);
+    setMoves((prevMoves) => prevMoves + 1);
     setIsPlayerTurn(true);
     setCurrentPlayer(nextPlayer === "X" ? "O" : "X");
-    checkLogic(newBoard, nextPlayer, moves + 1);
+    checkLogic(newBoard, nextPlayer);
   };
 
   const playerWon = (newBoard) => {
