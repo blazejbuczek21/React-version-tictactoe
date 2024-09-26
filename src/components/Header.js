@@ -7,6 +7,7 @@ const Header = ({
   isComputerPlayer,
   setInfoText,
   currentPlayer,
+  isPlayerTurn,
 }) => {
   return (
     <div className="container">
@@ -17,7 +18,8 @@ const Header = ({
         <div
           onClick={() => {
             setIsComputerPlayer(true);
-            setInfoText(`Your move ${currentPlayer}`);
+            restartGame();
+            setInfoText(`Your move X`);
           }}
           className={
             isComputerPlayer === true ? "header_item_active" : "header_item"
@@ -27,8 +29,13 @@ const Header = ({
         </div>
         <div
           onClick={() => {
-            setIsComputerPlayer(false);
-            setInfoText(`Player ${currentPlayer} turn`);
+            if (isPlayerTurn) {
+              setIsComputerPlayer(false);
+              setInfoText(`Player X turn`);
+              restartGame();
+            } else {
+              setInfoText("Wait for computer move!");
+            }
           }}
           className={
             isComputerPlayer === false ? "header_item_active" : "header_item"

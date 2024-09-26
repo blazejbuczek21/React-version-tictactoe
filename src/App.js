@@ -35,7 +35,6 @@ const App = () => {
     }
   };
   const checkLogic = (newBoard, currentPlayer) => {
-    console.log(moves);
     if (playerWon(newBoard)) {
       setGameOver(true);
       setInfoText(`Player ${currentPlayer} won`);
@@ -55,12 +54,11 @@ const App = () => {
         setIsPlayerTurn(false);
         setTimeout(() => {
           makeComputerMove(newBoard, nextPlayer);
-        }, 1000);
+        }, 2000);
       }
       if (isComputerPlayer === true && nextPlayer === "X")
         setInfoText(`Your move ${nextPlayer}`);
     }
-    console.log(moves);
   };
 
   const makeComputerMove = (newBoard, nextPlayer) => {
@@ -93,18 +91,28 @@ const App = () => {
     return false;
   };
 
+  const restartGame = () => {
+    if (isPlayerTurn) {
+      setBoard(Array(9).fill(null));
+      setMoves(0);
+      setGameOver(false);
+      setCurrentPlayer("X");
+    }
+  };
+  console.log(moves);
   return (
     <div className="App">
       <Header
         setIsComputerPlayer={setIsComputerPlayer}
         setInfoText={setInfoText}
-        // restartGame={restartGame}
+        restartGame={restartGame}
         isComputerPlayer={isComputerPlayer}
-        currentPlayer={currentPlayer}
+        // currentPlayer={currentPlayer}
+        isPlayerTurn={isPlayerTurn}
       />
       <Info infoText={infoText} />
       <Board board={board} cellClick={cellClick} />
-      {/* <Restart /> */}
+      <Restart restartGame={restartGame} />
     </div>
   );
 };
