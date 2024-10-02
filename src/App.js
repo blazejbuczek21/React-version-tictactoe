@@ -33,7 +33,11 @@ const App = () => {
       setMoves((prevMoves) => prevMoves + 1);
       checkLogic(newBoard, currentPlayer);
     }
+    if (!isPlayerTurn) {
+      setInfoText("Wait for computer move!");
+    }
   };
+
   const checkLogic = (newBoard, currentPlayer) => {
     if (playerWon(newBoard)) {
       setGameOver(true);
@@ -98,8 +102,13 @@ const App = () => {
       setGameOver(false);
       setCurrentPlayer("X");
     }
+    if (!isPlayerTurn) {
+      setInfoText("Wait for computer move!");
+    }
+    if (!isComputerPlayer) {
+      setInfoText(`Player X turn`);
+    }
   };
-  console.log(moves);
   return (
     <div className="App">
       <Header
@@ -107,12 +116,15 @@ const App = () => {
         setInfoText={setInfoText}
         restartGame={restartGame}
         isComputerPlayer={isComputerPlayer}
-        // currentPlayer={currentPlayer}
         isPlayerTurn={isPlayerTurn}
       />
       <Info infoText={infoText} />
       <Board board={board} cellClick={cellClick} />
-      <Restart restartGame={restartGame} />
+      <Restart
+        restartGame={restartGame}
+        isPlayerTurn={isPlayerTurn}
+        isComputerPlayer={isComputerPlayer}
+      />
     </div>
   );
 };

@@ -6,7 +6,6 @@ const Header = ({
   restartGame,
   isComputerPlayer,
   setInfoText,
-  currentPlayer,
   isPlayerTurn,
 }) => {
   return (
@@ -17,9 +16,11 @@ const Header = ({
       <div className="mode">
         <div
           onClick={() => {
-            setIsComputerPlayer(true);
-            restartGame();
-            setInfoText(`Your move X`);
+            if (isPlayerTurn) {
+              setIsComputerPlayer(true);
+              restartGame();
+              setInfoText(`Your move X`);
+            }
           }}
           className={
             isComputerPlayer === true ? "header_item_active" : "header_item"
