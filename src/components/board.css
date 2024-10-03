@@ -17,3 +17,11 @@
 .cell:hover {
   opacity: 0.9;
 }
+
+.x-winner {
+  background-color: lightcoral;
+}
+
+.o-winner {
+  background-color: lightblue;
+}

@@ -24,6 +24,7 @@ const App = () => {
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [currentPlayer, setCurrentPlayer] = useState("X");
   const [infoText, setInfoText] = useState(`Player X turn`);
+  const [winnerCombination, setWinnerCombination] = useState(null);
 
   const cellClick = (index) => {
     if (!board[index] && !gameOver && isPlayerTurn) {
@@ -88,19 +89,20 @@ const App = () => {
         newBoard[a] === newBoard[b] &&
         newBoard[b] === newBoard[c]
       ) {
-        // paintCells(a, b, c);
+        setWinnerCombination([a, b, c]);
         return [a, b, c];
       }
     }
     return false;
   };
 
-  const restartGame = () => {
+  const restartGame = (a, b, c) => {
     if (isPlayerTurn) {
       setBoard(Array(9).fill(null));
       setMoves(0);
       setGameOver(false);
       setCurrentPlayer("X");
+      setWinnerCombination([a, b, c]);
     }
     if (!isPlayerTurn) {
       setInfoText("Wait for computer move!");
@@ -119,7 +121,11 @@ const App = () => {
         isPlayerTurn={isPlayerTurn}
       />
       <Info infoText={infoText} />
-      <Board board={board} cellClick={cellClick} />
+      <Board
+        board={board}
+        cellClick={cellClick}
+        winnerCombination={winnerCombination}
+      />
       <Restart
         restartGame={restartGame}
         isPlayerTurn={isPlayerTurn}
