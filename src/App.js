@@ -110,7 +110,11 @@ const App = () => {
     if (!isComputerPlayer) {
       setInfoText(`Player X turn`);
     }
+    if (isComputerPlayer) {
+      setInfoText(`Your turn X`);
+    }
   };
+
   return (
     <div className="App">
       <Header
@@ -120,7 +124,7 @@ const App = () => {
         isComputerPlayer={isComputerPlayer}
         isPlayerTurn={isPlayerTurn}
       />
-      <Info infoText={infoText} />
+      <Info infoText={infoText} currentPlayer={currentPlayer} />
       <Board
         board={board}
         cellClick={cellClick}
